@@ -28,9 +28,10 @@ export class CoffeesController {
     return this.coffeesService.findAll();
   }
 
+  // 这里使用 Validation transform 进行类型转换
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.coffeesService.findOne(id);
+  findOne(@Param('id') id: number) {
+    return this.coffeesService.findOne('' + id);
   }
 
   @Post()
