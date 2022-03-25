@@ -1,5 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
+// 创建 复合索引 name-type
+@Index(['name', 'type'])
 @Entity()
 export class Event {
   @PrimaryGeneratedColumn()
@@ -8,6 +10,8 @@ export class Event {
   @Column()
   type: string;
 
+  // 创建索引
+  @Index()
   @Column()
   name: string;
 
