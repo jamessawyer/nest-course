@@ -8,7 +8,9 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
@@ -23,9 +25,8 @@ export class CoffeesController {
   //   response.status(200).send('this action return all coffees')
   // }
   @Get()
-  findAll() {
-    // const { limit, offset } = query;
-    return this.coffeesService.findAll();
+  findAll(@Query() paginationQuery: PaginationQueryDto) {
+    return this.coffeesService.findAll(paginationQuery);
   }
 
   // 这里使用 Validation transform 进行类型转换
