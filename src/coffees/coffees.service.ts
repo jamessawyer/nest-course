@@ -8,6 +8,7 @@ import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { Coffee } from './entities/coffee.entity';
 import { Flavor } from './entities/flavor.entity';
 import { COFFEE_BRANDS } from './coffees.constants';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class CoffeesService {
@@ -18,8 +19,12 @@ export class CoffeesService {
     private readonly flavorRepository: Repository<Flavor>,
     private readonly connection: Connection,
     @Inject(COFFEE_BRANDS) coffeeBrands: string[],
+    private readonly configService: ConfigService,
   ) {
     console.log('coffeeBrands: ', coffeeBrands);
+    // 'localhost' 是默认值
+    const host = this.configService.get<string>('DATABASE_HOST', 'localhost');
+    console.log('host: ', host);
   }
 
   async findAll(paginationQuery: PaginationQueryDto) {
