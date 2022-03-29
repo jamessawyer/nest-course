@@ -1,14 +1,15 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Event } from '../events/entities/event.entity';
+import { ConfigService, ConfigType } from '@nestjs/config';
 import { Connection, Repository } from 'typeorm';
+import { Event } from '../events/entities/event.entity';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { Coffee } from './entities/coffee.entity';
 import { Flavor } from './entities/flavor.entity';
 import { COFFEE_BRANDS } from './coffees.constants';
-import { ConfigService } from '@nestjs/config';
+import coffeesConfig from './config/coffees.config';
 
 @Injectable()
 export class CoffeesService {
@@ -20,11 +21,15 @@ export class CoffeesService {
     private readonly connection: Connection,
     @Inject(COFFEE_BRANDS) coffeeBrands: string[],
     private readonly configService: ConfigService,
+    @Inject(coffeesConfig.KEY)
+    private readonly coffeesConfiguration: ConfigType<typeof coffeesConfig>,
   ) {
     console.log('coffeeBrands: ', coffeeBrands);
     // 'localhost' 是默认值
     const host = this.configService.get<string>('DATABASE_HOST', 'localhost');
     console.log('host: ', host);
+
+    console.log('局部注册config: ', coffeesConfiguration.foo);
   }
 
   async findAll(paginationQuery: PaginationQueryDto) {
