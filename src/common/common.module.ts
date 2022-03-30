@@ -1,7 +1,8 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { ApiKeyGuard } from './guards/api-key.guard';
+import { LoggingMiddleware } from './middlewares/logging.middleware';
 
 @Module({
   imports: [ConfigModule],
@@ -15,4 +16,17 @@ import { ApiKeyGuard } from './guards/api-key.guard';
     },
   ],
 })
-export class CommonModule {}
+export class CommonModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggingMiddleware).forRoutes('*');
+    // 中间件的几种配置方式
+    // 只针对 'coffees' routes
+    // consumer.apply(LoggingMiddleware).forRoutes('coffees');
+
+    // 只对GET请求
+    // consumer.apply(LoggingMiddleware).forRoutes({ path: 'coffees', method: RequestMethod.GET });
+
+    // 排除 coffee routes
+    // consumer.apply(LoggingMiddleware).exclude('coffee').forRoutes('*');
+  }
+}
