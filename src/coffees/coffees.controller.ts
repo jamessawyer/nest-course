@@ -17,6 +17,7 @@ import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { Protocol } from '../common/decorators/protocol.decorator';
+import { ApiForbiddenResponse } from '@nestjs/swagger';
 
 @Controller('coffees')
 export class CoffeesController {
@@ -27,6 +28,7 @@ export class CoffeesController {
   // findAll(@Res response) {
   //   response.status(200).send('this action return all coffees')
   // }
+  @ApiForbiddenResponse({ description: '禁止访问' })
   @Public()
   @Get()
   async findAll(
