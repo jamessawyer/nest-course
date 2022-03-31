@@ -10,15 +10,16 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { ApiForbiddenResponse, ApiTags } from '@nestjs/swagger';
 import { ParseIntPipe } from '../common/pipes/parse-int.pipe';
 import { Public } from '../common/decorators/public.decorator';
+import { Protocol } from '../common/decorators/protocol.decorator';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
-import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
-import { Protocol } from '../common/decorators/protocol.decorator';
-import { ApiForbiddenResponse } from '@nestjs/swagger';
+import { CoffeesService } from './coffees.service';
 
+@ApiTags('coffees相关接口')
 @Controller('coffees')
 export class CoffeesController {
   constructor(private readonly coffeesService: CoffeesService) {}
